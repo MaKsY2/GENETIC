@@ -14,6 +14,7 @@ public:
 	Map();
 	~Map();
 	std::vector<std::vector<int>> getField();
+	std::vector<std::vector<int>> setField();
 
 private:
 	std::vector<std::vector<MyObject*>> mField;

@@ -31,3 +31,9 @@ Map::getField()
 	}
 	return result;
 }
+
+vector<vector<int>>
+Map::setField()
+{
+	
+}

@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "Graphics.h"
 #include "Object.h"
 #include "Map.h"
 
@@ -34,7 +34,7 @@ void MyGraphics::renderMap(RenderWindow& a)
 }
 void MyGraphics:: updateMap(vector<vector<int>> aMap, RenderWindow &a)
 {
-	vector<Color>color;
+	vector<Color>color(OBJECTS_CNT);
 	for (int i = 0; i < OBJECTS_CNT; i++)
 	{
 		color[i] = Color(i * 50, i * 50, i * 50);
@@ -64,7 +64,9 @@ int main()
 	ContextSettings settings;
 	settings.antialiasingLevel = 8;
 	RenderWindow window(VideoMode(500, 500), "GENETIC", Style::Default, settings);
-	MyGraphics::updateMap(Map::getField(),window)
-	
+	MyGraphics graph(window);
+	Map map1;
+	graph.updateMap(map1.getField(), window);
+	window.display();
 	return 0;
 }
