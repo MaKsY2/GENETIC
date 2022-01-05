@@ -11,8 +11,6 @@ using namespace sf;
 using namespace std;
 
 const float HEXAGON_SIZE = 20.f;
-const float FIELD_ROWS = 10.f;
-const float FIELD_COLS = 10.f;
 
 const float HEXAGON_ERROR = 2 - sqrt(3) - 0.01;
 
