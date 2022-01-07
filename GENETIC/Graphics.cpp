@@ -30,6 +30,7 @@ void MyGraphics::renderMap(RenderWindow& a)
 {
 
 }
+
 void MyGraphics:: updateMap(vector<vector<int>> aMap, RenderWindow &a)
 {
 	vector<Color>color(OBJECTS_CNT);
@@ -63,7 +64,8 @@ int main()
 	settings.antialiasingLevel = 8;
 	RenderWindow window(VideoMode(500, 500), "GENETIC", Style::Default, settings);
 	MyGraphics graph(window);
-	Map map1;
+	Map map1(FIELD_ROWS,FIELD_COLS);
+	map1.newEmptyMap();
 	graph.updateMap(map1.getField(), window);
 	window.display();
 	return 0;
