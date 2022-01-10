@@ -10,8 +10,8 @@
 #define MAX_FOOD_ELEMENTS 10
 #define MAX_POISON_ELEMENTS 10
 #define MAX_BOT_ELEMENTS 10
-#define FIELD_ROWS 10
-#define FIELD_COLS 10
+#define FIELD_ROWS 20
+#define FIELD_COLS 32
 
 
 class Map

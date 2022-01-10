@@ -16,16 +16,14 @@ Map::Map(int height, int weight):
 		{
 			if (i == 0 || j == 0 || i == FIELD_ROWS - 1 || j == FIELD_COLS - 1)
 			{
-				setObject(new MyObject(ObjectType::WALL), make_pair(j, i));
+				setObject(new MyObject(ObjectType::WALL), make_pair(i, j));
 			}
 			else
 			{
-				setObject(new MyObject(ObjectType::NUN), make_pair(j, i));
+				setObject(new MyObject(ObjectType::NUN), make_pair(i, j));
 			}
 		}
 	}
-
-
 }
 
 Map::~Map()
@@ -74,11 +72,11 @@ Map::newEmptyMap()
 		{
 			if (i == 0 || j == 0 || i == FIELD_ROWS - 1 || j == FIELD_COLS - 1)
 			{
-				setObject(new MyObject(ObjectType::WALL), make_pair(j, i));
+				setObject(new MyObject(ObjectType::WALL), make_pair(i, j));
 			}
 			else
 			{
-				setObject(new MyObject(ObjectType::NUN), make_pair(j, i));
+				setObject(new MyObject(ObjectType::NUN), make_pair(i, j));
 			}
 		}
 	}
@@ -90,6 +88,7 @@ Map::foodMapFilling(int cnt)
 	while (cnt != 0)
 	{
 		setObject(new MyObject(ObjectType::FOOD), newRandCoords());
+		cnt--;
 	}
 }
 
@@ -99,6 +98,7 @@ Map::poisonMapFilling(int cnt)
 	while (cnt != 0)
 	{
 		setObject(new MyObject(ObjectType::POISON), newRandCoords());
+		cnt--;
 	}
 }
 
