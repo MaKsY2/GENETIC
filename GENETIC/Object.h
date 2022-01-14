@@ -1,7 +1,11 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-const int OBJECTS_CNT = 5;
+#define OBJECTS_CNT 5
+#define FOOD_ADD_HEALTH 10
+#define POISON_TAKE_HEALTH 10
+#define HEALTH_PER_TURN 1
+
 
 enum ObjectType
 {
