@@ -5,25 +5,57 @@
 
 #include <vector>
 
-class BOT : public MyObject
+//enum Action
+//{
+//	NUN,
+//	FORWARD,
+//	LOOK,
+//	EAT
+//};
+
+//std::vector<Action> commands =
+//{
+//	NUN,
+//	NUN,
+//	EAT,
+//	FORWARD,
+//	LOOK
+//}; 
+
+
+class Bot : public MyObject
 {
-	enum Action 
+public:
+
+	enum Action
 	{
-		NUN, 
-		FORWARD, 
-		LOOK, 
+		NUN,
+		FORWARD,
+		LOOK,
 		EAT
 	};
 
-public:
-	BOT();
-	virtual ~BOT();
+	Bot();
+	virtual ~Bot();
 	Action run();
 
+	void mutation();
+
+	void feed(int cnt);
+	void hitting(int cnt);
+
+	int getHealth();
+	int getDirection();
+	int getPtr();
+
+	std::vector<int> getProgram();
+
 private:
-	int health;
+
+	int mHealth;
 	std::vector<int> mProgram;
-	int ptr;
+	int mPtr;
+	int mDirection;
 };
 
 #endif BOT_H

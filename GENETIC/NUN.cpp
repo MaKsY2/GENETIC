@@ -2,6 +2,8 @@
 
 
 
+// Rename to "VOID"
+
 NUN::NUN() :
 	MyObject(ObjectType::NUN)
 {

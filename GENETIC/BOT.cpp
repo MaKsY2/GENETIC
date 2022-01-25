@@ -1,10 +1,11 @@
 #include "BOT.h"
 
-BOT::BOT() :
+Bot::Bot() :
 	
 	MyObject	(ObjectType::BOT),
-	health		(0),
-	ptr			(0)
+	mHealth		(START_BOT_HEALTH),
+	mPtr		(0),
+	mDirection	(rand()%6)
 {
 	for (int i = 0; i < mProgram.size(); i++)
 	{
@@ -17,28 +18,75 @@ BOT::BOT() :
 //going on next cell							3(goForward)	FORWARD
 //looking to next cell on current direction		4(look)			LOOK
 
-BOT::Action BOT::run()
+Bot::Action Bot::run()
 {
-	if (mProgram[ptr] == 0 || 
-		mProgram[ptr] == 1 )
+	if (mProgram[mPtr] == 0 || 
+		mProgram[mPtr] == 1 )
 	{
 		return Action::NUN;
 	}
-	if (mProgram[ptr] == 2)
+	if (mProgram[mPtr] == 2)
 	{
 		return Action::EAT;
 	}
-	if (mProgram[ptr] == 3)
+	if (mProgram[mPtr] == 3)
 	{
 		return Action::FORWARD;
 	}
-	if (mProgram [ptr] == 4)
+	if (mProgram [mPtr] == 4)
 	{
 		return Action::LOOK;
 	}
 }
 
-BOT::~BOT()
+int
+Bot::getHealth()
+{
+	return mHealth;
+}
+
+int
+Bot::getDirection()
+{
+	return mDirection;
+}
+
+int 
+Bot::getPtr()
+{
+	return mPtr;
+}
+
+std::vector<int> 
+Bot::getProgram()
+{
+	return mProgram;
+}
+
+void 
+Bot::feed(int cnt)
+{
+	mHealth += cnt;
+}
+
+void
+Bot::hitting(int cnt)
+{
+	mHealth -= cnt;
+}
+
+void
+Bot::mutation()
+{
+	int randCntMutation = rand() % mProgram.size();
+	for (int i=0;i<randCntMutation;i++)
+	{
+		int ptr = rand() % mProgram.size();
+		mProgram[ptr] = rand() % COMMAND_COUNT;
+	}
+}
+
+Bot::~Bot()
 {
 
 }

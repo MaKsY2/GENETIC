@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "Object.h"
+#include "BOT.h"
 
 #include <iostream>
 #include <map>
@@ -88,6 +89,106 @@ Map::foodMapFilling(int cnt)
 	while (cnt != 0)
 	{
 		setObject(new MyObject(ObjectType::FOOD), newRandCoords());
+		cnt--;
+	}
+}
+
+
+void
+Map::makeTurn()
+{
+	int cnt = bots.size();
+	for (int i = 0; i < cnt; i++)
+	{
+		pair<int, int> currentBot = bots.front();
+		bots.pop();
+		Bot* bot = static_cast<Bot*>(mField[currentBot.first][currentBot.second]);
+		pair<int, int> nearCoord;
+		nearCoord.first = currentBot.first + dx[bot->getDirection()];
+		nearCoord.second = currentBot.second + dy[bot->getDirection()];
+		MyObject* nearObj = mField[nearCoord.first][nearCoord.second];
+		switch (bot->run())
+		{
+		case Bot::Action::NUN:
+			break;
+		case Bot::Action::EAT:
+			switch (nearObj->getType())
+			{
+			case ObjectType::BOT:
+				break;
+			case ObjectType::FOOD:
+				//  
+				setObject(bot, nearCoord);
+				setObject(new MyObject(ObjectType::NUN), currentBot);
+				bot->feed(FOOD_ADD_HEALTH);
+				currentBot = nearCoord;
+				bots.push(currentBot);
+				break;
+			case ObjectType::NUN:
+				//
+				setObject(bot, nearCoord);
+				setObject(new MyObject(ObjectType::NUN), currentBot);
+				currentBot = nearCoord;
+				bots.push(currentBot);
+				break;
+			case ObjectType::POISON:
+				//
+				setObject(bot, nearCoord);
+				setObject(new MyObject(ObjectType::NUN), currentBot);
+				bot->hitting(POISON_TAKE_HEALTH);
+				currentBot = nearCoord;
+				bots.push(currentBot);
+				break;
+			case ObjectType::WALL:
+				break;
+			}
+			break;
+		case Bot::Action::FORWARD:
+			switch (nearObj->getType()) 
+			{
+			case ObjectType::BOT:
+				break;
+			case ObjectType::FOOD:
+				//
+				setObject(bot, nearCoord);
+				setObject(new MyObject(ObjectType::NUN), currentBot);
+				bot->feed(FOOD_ADD_HEALTH/2);
+				currentBot = nearCoord;
+				bots.push(currentBot);
+				break;
+			case ObjectType::NUN:
+				//
+				setObject(bot, nearCoord);
+				setObject(new MyObject(ObjectType::NUN), currentBot);
+				currentBot = nearCoord;
+				bots.push(currentBot);
+				break;
+			case ObjectType::POISON:
+				//
+				setObject(bot, nearCoord);
+				setObject(new MyObject(ObjectType::NUN), currentBot);
+				bot->hitting(POISON_TAKE_HEALTH/2);
+				currentBot = nearCoord;
+				bots.push(currentBot);
+				break;
+			case ObjectType::WALL:
+				break;
+			}
+			break;
+		}
+
+	}
+}
+
+
+void
+Map::botMapFilling(int cnt)
+{
+	while (cnt != 0)
+	{
+		pair<int, int> botCoord = newRandCoords();
+		bots.push(botCoord);
+		setObject(new MyObject(ObjectType::BOT), botCoord);
 		cnt--;
 	}
 }
