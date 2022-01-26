@@ -4,13 +4,13 @@
 
 // Rename to "VOID"
 
-NUN::NUN() :
+Nun::Nun() :
 	MyObject(ObjectType::NUN)
 {
 
 }
 
-NUN::~NUN()
+Nun::~Nun()
 {
 
 }

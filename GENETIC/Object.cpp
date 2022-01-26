@@ -4,6 +4,11 @@
 
 using namespace std;
 
+MyObject::MyObject()
+{
+
+}
+
 MyObject::MyObject(ObjectType aType) :
 	mType(aType)
 {}

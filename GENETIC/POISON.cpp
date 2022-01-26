@@ -2,13 +2,13 @@
 
 
 
-POISON::POISON():
+Poison::Poison():
 	MyObject		(ObjectType::POISON)
 {
 
 }
 
-POISON::~POISON()
+Poison::~Poison()
 {
 
 }

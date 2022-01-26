@@ -36,6 +36,7 @@ public:
 	};
 
 	Bot();
+	Bot(Bot& other);
 	virtual ~Bot();
 	Action run();
 

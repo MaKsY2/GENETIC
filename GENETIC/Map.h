@@ -8,14 +8,12 @@
 #include <vector>
 #include <queue>
 
-#define MAX_FOOD_ELEMENTS 10
-#define MAX_POISON_ELEMENTS 10
-#define MAX_BOT_ELEMENTS 10
-#define FIELD_ROWS 20
-#define FIELD_COLS 32
+#define MAX_FOOD_ELEMENTS 2
+#define MAX_POISON_ELEMENTS 2
+#define MAX_BOT_ELEMENTS 5
+#define FIELD_ROWS 8
+#define FIELD_COLS 8
 
-int dx[] = { -1,-1,-1, 0, 1, 0 };
-int dy[] = {  1, 0,-1, 1, 0,-1 };
 
 class Map
 {

@@ -7,10 +7,20 @@ Bot::Bot() :
 	mPtr		(0),
 	mDirection	(rand()%6)
 {
-	for (int i = 0; i < mProgram.size(); i++)
+	for (int i = 0; i < BOT_MEMORY; i++)
 	{
-		mProgram[i] = rand() % 5;
+		mProgram.push_back(rand() % 5);
 	}
+}
+
+
+Bot::Bot(Bot& other):
+	mHealth		(other.mHealth),
+	mProgram	(other.mProgram),
+	mPtr		(other.mPtr),
+	mDirection	(other.mDirection)
+{
+
 }
 //do nothing									0(nothing)		NUN
 //change current direction						1(turn)			NUN

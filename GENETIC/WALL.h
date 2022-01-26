@@ -3,11 +3,11 @@
 
 #include "Object.h"
 
-class WALL : public MyObject
+class Wall : public MyObject
 {
 public:
-	WALL();
-	virtual ~WALL();
+	Wall();
+	virtual ~Wall();
 private:
 };
 

@@ -3,11 +3,11 @@
 
 #include "Object.h"
 
-class NUN : public MyObject
+class Nun : public MyObject
 {
 public:
-	NUN();
-	virtual ~NUN();
+	Nun();
+	virtual ~Nun();
 private:
 };
 

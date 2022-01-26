@@ -2,13 +2,13 @@
 
 
 
-WALL::WALL() :
+Wall::Wall() :
 	MyObject(ObjectType::WALL)
 {
 
 }
 
-WALL::~WALL()
+Wall::~Wall()
 {
 
 }

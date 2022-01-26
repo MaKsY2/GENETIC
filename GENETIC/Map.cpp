@@ -1,12 +1,20 @@
 #include "Map.h"
 #include "Object.h"
+
 #include "BOT.h"
+#include "FOOD.h"
+#include "NUN.h"
+#include "POISON.h"
+#include "WALL.h"
 
 #include <iostream>
 #include <map>
 #include <vector>
 
 using namespace std;
+
+int dx[] = { -1,-1,-1, 0, 1, 0 };
+int dy[] = { 1, 0,-1, 1, 0,-1 };
 
 Map::Map(int height, int weight):
 	mField					(height,vector<MyObject*>(weight,NULL))
@@ -17,11 +25,11 @@ Map::Map(int height, int weight):
 		{
 			if (i == 0 || j == 0 || i == FIELD_ROWS - 1 || j == FIELD_COLS - 1)
 			{
-				setObject(new MyObject(ObjectType::WALL), make_pair(i, j));
+				setObject(new Wall(), make_pair(i, j));
 			}
 			else
 			{
-				setObject(new MyObject(ObjectType::NUN), make_pair(i, j));
+				setObject(new Nun(), make_pair(i, j));
 			}
 		}
 	}
@@ -50,11 +58,11 @@ Map::getField()
 void
 Map::newObjectOnField(ObjectType aType, pair <int,int> aCoord)
 {
-	if (aType == ObjectType::BOT) setObject(new MyObject(ObjectType::BOT), aCoord);
-	if (aType == ObjectType::FOOD) setObject(new MyObject(ObjectType::FOOD), aCoord);
-	if (aType == ObjectType::NUN) setObject(new MyObject(ObjectType::NUN), aCoord);
-	if (aType == ObjectType::POISON) setObject(new MyObject(ObjectType::POISON), aCoord);
-	if (aType == ObjectType::WALL) setObject(new MyObject(ObjectType::WALL), aCoord);
+	if (aType == ObjectType::BOT) setObject(new Bot(), aCoord);
+	if (aType == ObjectType::FOOD) setObject(new Food(), aCoord);
+	if (aType == ObjectType::NUN) setObject(new Nun(), aCoord);
+	if (aType == ObjectType::POISON) setObject(new Poison(), aCoord);
+	if (aType == ObjectType::WALL) setObject(new Wall(), aCoord);
 }
 
 void
@@ -73,11 +81,11 @@ Map::newEmptyMap()
 		{
 			if (i == 0 || j == 0 || i == FIELD_ROWS - 1 || j == FIELD_COLS - 1)
 			{
-				setObject(new MyObject(ObjectType::WALL), make_pair(i, j));
+				setObject(new Wall(), make_pair(i, j));
 			}
 			else
 			{
-				setObject(new MyObject(ObjectType::NUN), make_pair(i, j));
+				setObject(new Nun(), make_pair(i, j));
 			}
 		}
 	}
@@ -88,7 +96,7 @@ Map::foodMapFilling(int cnt)
 {
 	while (cnt != 0)
 	{
-		setObject(new MyObject(ObjectType::FOOD), newRandCoords());
+		setObject(new Food(), newRandCoords());
 		cnt--;
 	}
 }
@@ -104,12 +112,14 @@ Map::makeTurn()
 		bots.pop();
 		Bot* bot = static_cast<Bot*>(mField[currentBot.first][currentBot.second]);
 		pair<int, int> nearCoord;
-		nearCoord.first = currentBot.first + dx[bot->getDirection()];
-		nearCoord.second = currentBot.second + dy[bot->getDirection()];
+		nearCoord.second = currentBot.second + dx[bot->getDirection()];
+		nearCoord.first = currentBot.first + dy[bot->getDirection()];
 		MyObject* nearObj = mField[nearCoord.first][nearCoord.second];
 		switch (bot->run())
 		{
 		case Bot::Action::NUN:
+			break;
+		case Bot::Action::LOOK:
 			break;
 		case Bot::Action::EAT:
 			switch (nearObj->getType())
@@ -119,7 +129,7 @@ Map::makeTurn()
 			case ObjectType::FOOD:
 				//  
 				setObject(bot, nearCoord);
-				setObject(new MyObject(ObjectType::NUN), currentBot);
+				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->feed(FOOD_ADD_HEALTH);
 				currentBot = nearCoord;
 				bots.push(currentBot);
@@ -127,14 +137,14 @@ Map::makeTurn()
 			case ObjectType::NUN:
 				//
 				setObject(bot, nearCoord);
-				setObject(new MyObject(ObjectType::NUN), currentBot);
+				mField[currentBot.first][currentBot.second] = new Nun();
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;
 			case ObjectType::POISON:
 				//
 				setObject(bot, nearCoord);
-				setObject(new MyObject(ObjectType::NUN), currentBot);
+				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->hitting(POISON_TAKE_HEALTH);
 				currentBot = nearCoord;
 				bots.push(currentBot);
@@ -151,7 +161,7 @@ Map::makeTurn()
 			case ObjectType::FOOD:
 				//
 				setObject(bot, nearCoord);
-				setObject(new MyObject(ObjectType::NUN), currentBot);
+				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->feed(FOOD_ADD_HEALTH/2);
 				currentBot = nearCoord;
 				bots.push(currentBot);
@@ -159,14 +169,14 @@ Map::makeTurn()
 			case ObjectType::NUN:
 				//
 				setObject(bot, nearCoord);
-				setObject(new MyObject(ObjectType::NUN), currentBot);
+				mField[currentBot.first][currentBot.second] = new Nun();
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;
 			case ObjectType::POISON:
 				//
 				setObject(bot, nearCoord);
-				setObject(new MyObject(ObjectType::NUN), currentBot);
+				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->hitting(POISON_TAKE_HEALTH/2);
 				currentBot = nearCoord;
 				bots.push(currentBot);
@@ -176,7 +186,11 @@ Map::makeTurn()
 			}
 			break;
 		}
-
+		//”брать это, а то пахнет плохо:
+		if (currentBot != nearCoord)
+		{
+			bots.push(currentBot);
+		}
 	}
 }
 
@@ -188,7 +202,7 @@ Map::botMapFilling(int cnt)
 	{
 		pair<int, int> botCoord = newRandCoords();
 		bots.push(botCoord);
-		setObject(new MyObject(ObjectType::BOT), botCoord);
+		setObject(new Bot(), botCoord);
 		cnt--;
 	}
 }
@@ -198,7 +212,7 @@ Map::poisonMapFilling(int cnt)
 {
 	while (cnt != 0)
 	{
-		setObject(new MyObject(ObjectType::POISON), newRandCoords());
+		setObject(new Poison(), newRandCoords());
 		cnt--;
 	}
 }

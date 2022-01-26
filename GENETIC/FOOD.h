@@ -3,11 +3,11 @@
 
 #include "Object.h"
 
-class FOOD : public MyObject
+class Food : public MyObject
 {
 public:
-	FOOD();
-	virtual ~FOOD();
+	Food();
+	virtual ~Food();
 private:
 };
 

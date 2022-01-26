@@ -2,13 +2,13 @@
 
 
 
-FOOD::FOOD() :
+Food::Food() :
 	MyObject(ObjectType::FOOD)
 {
 
 }
 
-FOOD::~FOOD()
+Food::~Food()
 {
 
 }

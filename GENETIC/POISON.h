@@ -3,11 +3,11 @@
 
 #include "Object.h"
 
-class POISON : public MyObject
+class Poison : public MyObject
 {
 public:
-	POISON();
-	virtual ~POISON();
+	Poison();
+	virtual ~Poison();
 private:
 };
 
