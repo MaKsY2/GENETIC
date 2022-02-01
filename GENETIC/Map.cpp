@@ -118,19 +118,23 @@ Map::makeTurn()
 		switch (bot->run())
 		{
 		case Bot::Action::NUN:
+			bot->shiftPtr();
 			break;
 		case Bot::Action::LOOK:
+			bot->shiftPtr();
 			break;
 		case Bot::Action::EAT:
 			switch (nearObj->getType())
 			{
 			case ObjectType::BOT:
+				bot->shiftPtr();
 				break;
 			case ObjectType::FOOD:
 				//  
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->feed(FOOD_ADD_HEALTH);
+				bot->shiftPtr();
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;
@@ -138,6 +142,7 @@ Map::makeTurn()
 				//
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
+				bot->shiftPtr();
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;
@@ -145,11 +150,13 @@ Map::makeTurn()
 				//
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
+				bot->shiftPtr();
 				bot->hitting(POISON_TAKE_HEALTH);
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;
 			case ObjectType::WALL:
+				bot->shiftPtr();
 				break;
 			}
 			break;
@@ -157,11 +164,13 @@ Map::makeTurn()
 			switch (nearObj->getType()) 
 			{
 			case ObjectType::BOT:
+				bot->shiftPtr();
 				break;
 			case ObjectType::FOOD:
 				//
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
+				bot->shiftPtr();
 				bot->feed(FOOD_ADD_HEALTH/2);
 				currentBot = nearCoord;
 				bots.push(currentBot);
@@ -170,6 +179,7 @@ Map::makeTurn()
 				//
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
+				bot->shiftPtr();
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;
@@ -177,11 +187,13 @@ Map::makeTurn()
 				//
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
+				bot->shiftPtr();
 				bot->hitting(POISON_TAKE_HEALTH/2);
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;
 			case ObjectType::WALL:
+				bot->shiftPtr();
 				break;
 			}
 			break;

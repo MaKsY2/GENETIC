@@ -96,6 +96,26 @@ Bot::mutation()
 	}
 }
 
+void
+Bot::shiftPtr()
+{
+	mPtr++;
+	if (mPtr >= mProgram.size())
+	{
+		mPtr %= mProgram.size();
+	}
+}
+
+void 
+Bot::shiftPtrs(int cnt)
+{
+	mPtr += cnt;
+	if (mPtr >= mProgram.size())
+	{
+		mPtr %= mProgram.size();
+	}
+}
+
 Bot::~Bot()
 {
 

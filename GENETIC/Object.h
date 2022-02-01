@@ -7,7 +7,7 @@
 #define POISON_TAKE_HEALTH 10
 #define HEALTH_PER_TURN 1
 #define COMMAND_COUNT 5
-#define BOT_MEMORY 8
+#define BOT_MEMORY 100
 
 
 

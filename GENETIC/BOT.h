@@ -44,6 +44,8 @@ public:
 
 	void feed(int cnt);
 	void hitting(int cnt);
+	void shiftPtrs(int cnt);
+	void shiftPtr();
 
 	int getHealth();
 	int getDirection();

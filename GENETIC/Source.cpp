@@ -2,6 +2,32 @@
 #include "Map.h"
 #include "Graphics.h"
 
+
+void timeStamp(Event &event)
+{
+	long long timeStamper = 1 * 8 * 8 * 8 * 8 * 8 * 8 * 8 * 8 * 8;
+	for (long long i = 0; i < timeStamper; i++)
+	{
+		if (event.type == sf::Event::KeyReleased) {
+			switch (event.key.code)
+			{
+			case sf::Keyboard::Key::Up:
+				timeStamper *= 8;
+				break;
+			case sf::Keyboard::Key::Down:
+				timeStamper /= 8;
+				break;
+			case sf::Keyboard::Key::Tab:
+				timeStamper = 1;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+}
+
 int main()
 {
 	ContextSettings settings;
@@ -19,18 +45,25 @@ int main()
 	map1.botMapFilling(MAX_BOT_ELEMENTS);
 
 	while (window.isOpen()) {
+
 		Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
 				window.close();
 		}
+
 		graph.updateMap(map1.getField(), window);
 		window.display();
+
+		timeStamp(event);
 		map1.makeTurn();
-		vector<vector<int>>ff = map1.getField();
-		graph.updateMap(map1.getField(), window);
-		window.display();
+
+
+
+		//vector<vector<int>>ff = map1.getField();
+		//graph.updateMap(map1.getField(), window);
+		//window.display();
 	}
 	return 0;
 }
