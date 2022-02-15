@@ -10,11 +10,15 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <iomanip>
 
 using namespace std;
 
-int dx[] = { -1,-1,-1, 0, 1, 0 };
-int dy[] = { 1, 0,-1, 1, 0,-1 };
+int dx0[] = {  0,-1,0, 1,1, 1 };
+int dy0[] = { -1, 0,1,-1,0,-1 };
+
+int dx1[] = { -1,-1,-1, 0,1, 0 };
+int dy1[] = { -1, 0, 1,-1,0,-1 };
 
 Map::Map(int height, int weight):
 	mField					(height,vector<MyObject*>(weight,NULL))
@@ -112,12 +116,24 @@ Map::makeTurn()
 		bots.pop();
 		Bot* bot = static_cast<Bot*>(mField[currentBot.first][currentBot.second]);
 		pair<int, int> nearCoord;
-		nearCoord.second = currentBot.second + dx[bot->getDirection()];
-		nearCoord.first = currentBot.first + dy[bot->getDirection()];
+		if (currentBot.first % 2 == 0) {
+			nearCoord.second = currentBot.second + dx0[bot->getDirection()];
+			nearCoord.first = currentBot.first + dy0[bot->getDirection()];
+		}
+		else
+		{
+			nearCoord.second = currentBot.second + dx1[bot->getDirection()];
+			nearCoord.first = currentBot.first + dy1[bot->getDirection()];
+		}
+
 		MyObject* nearObj = mField[nearCoord.first][nearCoord.second];
 		switch (bot->run())
 		{
 		case Bot::Action::NUN:
+			bot->shiftPtr();
+			break;
+		case Bot::Action::TURN:
+			bot->changeDir();
 			bot->shiftPtr();
 			break;
 		case Bot::Action::LOOK:
@@ -131,6 +147,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::FOOD:
 				//  
+				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n'; cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->feed(FOOD_ADD_HEALTH);
@@ -140,6 +157,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::NUN:
 				//
+				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
@@ -148,6 +166,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::POISON:
 				//
+				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
@@ -161,22 +180,24 @@ Map::makeTurn()
 			}
 			break;
 		case Bot::Action::FORWARD:
-			switch (nearObj->getType()) 
+			switch (nearObj->getType())
 			{
 			case ObjectType::BOT:
 				bot->shiftPtr();
 				break;
 			case ObjectType::FOOD:
 				//
+				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
-				bot->feed(FOOD_ADD_HEALTH/2);
+				bot->feed(FOOD_ADD_HEALTH / 2);
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;
 			case ObjectType::NUN:
 				//
+				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
@@ -185,10 +206,11 @@ Map::makeTurn()
 				break;
 			case ObjectType::POISON:
 				//
+				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
-				bot->hitting(POISON_TAKE_HEALTH/2);
+				bot->hitting(POISON_TAKE_HEALTH / 2);
 				currentBot = nearCoord;
 				bots.push(currentBot);
 				break;

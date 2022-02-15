@@ -23,17 +23,20 @@ Bot::Bot(Bot& other):
 
 }
 //do nothing									0(nothing)		NUN
-//change current direction						1(turn)			NUN
+//change current direction						1(turn)			TURN
 //eating food on current cell					2(eat)			EAT
 //going on next cell							3(goForward)	FORWARD
 //looking to next cell on current direction		4(look)			LOOK
 
 Bot::Action Bot::run()
 {
-	if (mProgram[mPtr] == 0 || 
-		mProgram[mPtr] == 1 )
+	if (mProgram[mPtr] == 0)
 	{
 		return Action::NUN;
+	}
+	if (mProgram[mPtr] == 1)
+	{
+		return Action::TURN;
 	}
 	if (mProgram[mPtr] == 2)
 	{
@@ -86,7 +89,7 @@ Bot::hitting(int cnt)
 }
 
 void
-Bot::mutation()
+Bot::randMutation()
 {
 	int randCntMutation = rand() % mProgram.size();
 	for (int i=0;i<randCntMutation;i++)
@@ -97,12 +100,45 @@ Bot::mutation()
 }
 
 void
+Bot::changeDir()
+{
+	int currentDir = mDirection;
+	while (mDirection == currentDir) {
+		mDirection = rand() % 6;
+	}
+}
+
+void
 Bot::shiftPtr()
 {
 	mPtr++;
 	if (mPtr >= mProgram.size())
 	{
 		mPtr %= mProgram.size();
+	}
+}
+
+void
+Bot::fullMutation()
+{
+	for (int i = 0; i < mProgram.size(); i++)
+	{
+		mProgram[i] = rand() % 5;
+	}
+}
+
+void
+Bot::mutation(int ptr,int cnt)
+{
+	int range = ptr + cnt - 1;
+	if (range > mProgram.size())
+	{
+		range = mProgram.size();
+	}
+	for (int i = ptr - 1; i < range; i++)
+	{
+
+		mProgram[i] = rand() % 5;
 	}
 }
 

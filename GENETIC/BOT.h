@@ -32,7 +32,8 @@ public:
 		NUN,
 		FORWARD,
 		LOOK,
-		EAT
+		EAT,
+		TURN
 	};
 
 	Bot();
@@ -40,18 +41,22 @@ public:
 	virtual ~Bot();
 	Action run();
 
-	void mutation();
 
 	void feed(int cnt);
 	void hitting(int cnt);
+	void changeDir();
 	void shiftPtrs(int cnt);
 	void shiftPtr();
+	void fullMutation();
+	void mutation(int ptr, int cnt);
+	void randMutation();
 
 	int getHealth();
 	int getDirection();
 	int getPtr();
 
 	std::vector<int> getProgram();
+
 
 private:
 
