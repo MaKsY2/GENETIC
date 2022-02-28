@@ -27,6 +27,7 @@ public:
 	void poisonMapFilling(int cnt);
 	void foodMapFilling(int cnt);
 	void botMapFilling(int cnt);
+	MyObject* getObj(int y, int x);
 	std::pair<int, int> newRandCoords();
 	
 

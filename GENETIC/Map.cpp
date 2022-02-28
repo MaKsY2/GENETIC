@@ -106,6 +106,13 @@ Map::foodMapFilling(int cnt)
 }
 
 
+MyObject*
+Map::getObj(int y, int x)
+{
+	return mField[y][x];
+}
+
+
 void
 Map::makeTurn()
 {
@@ -153,7 +160,7 @@ Map::makeTurn()
 				bot->feed(FOOD_ADD_HEALTH);
 				bot->shiftPtr();
 				currentBot = nearCoord;
-				bots.push(currentBot);
+				//bots.push(currentBot);
 				break;
 			case ObjectType::NUN:
 				//
@@ -162,7 +169,7 @@ Map::makeTurn()
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
 				currentBot = nearCoord;
-				bots.push(currentBot);
+				//bots.push(currentBot);
 				break;
 			case ObjectType::POISON:
 				//
@@ -172,7 +179,7 @@ Map::makeTurn()
 				bot->shiftPtr();
 				bot->hitting(POISON_TAKE_HEALTH);
 				currentBot = nearCoord;
-				bots.push(currentBot);
+				//bots.push(currentBot);
 				break;
 			case ObjectType::WALL:
 				bot->shiftPtr();
@@ -193,7 +200,7 @@ Map::makeTurn()
 				bot->shiftPtr();
 				bot->feed(FOOD_ADD_HEALTH / 2);
 				currentBot = nearCoord;
-				bots.push(currentBot);
+				//bots.push(currentBot);
 				break;
 			case ObjectType::NUN:
 				//
@@ -202,7 +209,7 @@ Map::makeTurn()
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
 				currentBot = nearCoord;
-				bots.push(currentBot);
+				//bots.push(currentBot);
 				break;
 			case ObjectType::POISON:
 				//
@@ -212,7 +219,7 @@ Map::makeTurn()
 				bot->shiftPtr();
 				bot->hitting(POISON_TAKE_HEALTH / 2);
 				currentBot = nearCoord;
-				bots.push(currentBot);
+				//bots.push(currentBot);
 				break;
 			case ObjectType::WALL:
 				bot->shiftPtr();
@@ -220,12 +227,23 @@ Map::makeTurn()
 			}
 			break;
 		}
-		//”брать это, а то пахнет плохо:
-		if (currentBot != nearCoord)
+		bot->hitting(1);
+		int isLive = true;
+		if (bot->getHealth() == 0)
+		{
+			isLive = false;
+			setObject(new Nun, currentBot);
+		}
+
+		//there is should be some fixes later 
+		if (isLive) 
 		{
 			bots.push(currentBot);
 		}
+		//
+
 	}
+	//
 }
 
 

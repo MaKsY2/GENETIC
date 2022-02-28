@@ -33,7 +33,9 @@ int main()
 	ContextSettings settings;
 	settings.antialiasingLevel = 8;
 	RenderWindow window(VideoMode(1600, 900), "GENETIC", Style::Default, settings);
-	MyGraphics graph(window);
+	Font font;
+	font.loadFromFile("21037.ttf");
+	MyGraphics graph(window, font);
 
 
 
@@ -53,7 +55,7 @@ int main()
 				window.close();
 		}
 
-		graph.updateMap(map1.getField(), window);
+		graph.updateMap(map1.getField(), window, map1);
 		window.display();
 
 		timeStamp(event);

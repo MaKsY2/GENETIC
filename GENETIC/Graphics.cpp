@@ -2,6 +2,8 @@
 #include "Object.h"
 #include "Map.h"
 
+#include "BOT.h"
+
 #include <SFML/Graphics.hpp>
 #include <ctime>
 #include <iostream>
@@ -12,12 +14,13 @@ using namespace std;
 
 const float HEXAGON_SIZE = 20.f;
 
-//const float HEXAGON_ERROR = 0;
+
 const float HEXAGON_ERROR = 3 - sqrt(3);
 
 
-MyGraphics::MyGraphics(RenderWindow& aWindow) :
-	mWindow(aWindow)
+MyGraphics::MyGraphics(RenderWindow& aWindow, Font& aFont) :
+	mWindow(aWindow),
+	font(aFont)
 {
 
 }
@@ -32,7 +35,7 @@ void MyGraphics::renderMap(RenderWindow& a)
 
 }
 
-void MyGraphics:: updateMap(vector<vector<int>> aMap, RenderWindow &a)
+void MyGraphics:: updateMap(vector<vector<int>> aMap, RenderWindow &a,Map& map1 )
 {
 	vector<Color>color(OBJECTS_CNT);
 	color[ObjectType::BOT] = Color(240, 45, 58);
@@ -41,6 +44,10 @@ void MyGraphics:: updateMap(vector<vector<int>> aMap, RenderWindow &a)
 	color[ObjectType::WALL] = Color(181, 127, 80);
 	color[ObjectType::POISON] = Color(161, 103, 165);
 	a.clear(Color(0, 0, 0, 0));
+	Text text;
+	text.setFillColor(Color::Black);
+	text.setCharacterSize(15.f);
+	text.setFont(font);
 	CircleShape hexagon(HEXAGON_SIZE, 6);
 	hexagon.setFillColor(Color(255, 200, 0));
 	hexagon.setOutlineThickness(3.f);
@@ -59,6 +66,14 @@ void MyGraphics:: updateMap(vector<vector<int>> aMap, RenderWindow &a)
 			hexagon.setFillColor(color[aMap[i][j]]);
 			hexagon.move((HEXAGON_SIZE - HEXAGON_ERROR) * (2) * bool(j), 0);
 			a.draw(hexagon);
+			if (aMap[i][j] == ObjectType::BOT)
+			{
+				Bot* bot = static_cast<Bot*>(map1.getObj(i, j));
+				text.setPosition(hexagon.getPosition() + Vector2f{7.f,7.f});
+				text.setString(to_string(bot->getHealth()));
+				a.draw(text);
+				
+			}
 		}
 	}
 }
