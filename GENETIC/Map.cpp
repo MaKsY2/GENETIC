@@ -44,6 +44,74 @@ Map::~Map()
 
 }
 
+bool
+Map::needEvolve()
+{
+	return (bots.size() <= MAX_BOT_ELEMENTS / K_TO_EVOLVE) ? true : false;
+}
+
+void
+Map::evolve()
+{
+	int evolveCount = bots.size();
+	for (size_t i = 0; i < evolveCount; i++)
+	{ 
+		pair<int, int> current = bots.front();
+		Bot *botParent = static_cast<Bot*>(mField[current.first][current.second]);
+		botParent->restoreHealth();
+		for (size_t i = 1; i < K_TO_EVOLVE; i++)
+		{
+			pair<int, int> newBot = newRandCoords();
+			setObject(new Bot(), newBot);
+			bots.push(newBot);
+			Bot* botSon = static_cast<Bot*>(mField[newBot.first][newBot.second]);
+			botSon->setProgram(botParent->getProgram());
+			botSon->randMutation();
+			botSon->setHealth(START_BOT_HEALTH);
+		}
+		botParent->setHealth(START_BOT_HEALTH);
+		
+	}
+	while (bots.size() != MAX_BOT_ELEMENTS)
+	{
+		pair<int, int> newBot = newRandCoords();
+		setObject(new Bot(), newBot);
+		bots.push(newBot);
+	}
+}
+
+int Map::foodOnMap()
+{
+	int cnt = 0;
+	for (int i = 0; i < FIELD_ROWS; i++)
+	{
+		for (int j = 0;j < FIELD_COLS;j++)
+		{
+			if (mField[i][j]->getType() == ObjectType::FOOD)
+			{
+				cnt++;
+			}
+		}
+	}
+	return cnt;
+}
+
+int Map::poisonOnMap()
+{
+	int cnt = 0;
+	for (int i = 0; i < FIELD_ROWS; i++)
+	{
+		for (int j = 0;j < FIELD_COLS;j++)
+		{
+			if (mField[i][j]->getType() == ObjectType::POISON)
+			{
+				cnt++;
+			}
+		}
+	}
+	return cnt;
+}
+
 vector<vector<int>> 
 Map::getField()
 {
@@ -154,7 +222,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::FOOD:
 				//  
-				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n'; cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n'; // cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->feed(FOOD_ADD_HEALTH);
@@ -164,7 +232,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::NUN:
 				//
-				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
@@ -173,7 +241,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::POISON:
 				//
-				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
@@ -194,7 +262,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::FOOD:
 				//
-				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
@@ -204,7 +272,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::NUN:
 				//
-				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
@@ -213,7 +281,7 @@ Map::makeTurn()
 				break;
 			case ObjectType::POISON:
 				//
-				cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
 				setObject(bot, nearCoord);
 				mField[currentBot.first][currentBot.second] = new Nun();
 				bot->shiftPtr();
@@ -229,7 +297,7 @@ Map::makeTurn()
 		}
 		bot->hitting(1);
 		int isLive = true;
-		if (bot->getHealth() == 0)
+		if (bot->getHealth() <= 0)
 		{
 			isLive = false;
 			setObject(new Nun, currentBot);

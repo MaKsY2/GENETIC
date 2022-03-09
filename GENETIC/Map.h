@@ -8,11 +8,14 @@
 #include <vector>
 #include <queue>
 
-#define MAX_FOOD_ELEMENTS 2
-#define MAX_POISON_ELEMENTS 2
-#define MAX_BOT_ELEMENTS 5
-#define FIELD_ROWS 8
-#define FIELD_COLS 8
+#define MAX_FOOD_ELEMENTS 100
+#define MAX_POISON_ELEMENTS 100
+#define MAX_FOOD_CNT 250
+#define MAX_POISON_CNT 250
+#define MAX_BOT_ELEMENTS 32
+#define K_TO_EVOLVE 16 //Coefficient to evolve
+#define FIELD_ROWS 64
+#define FIELD_COLS 36
 
 
 class Map
@@ -27,6 +30,11 @@ public:
 	void poisonMapFilling(int cnt);
 	void foodMapFilling(int cnt);
 	void botMapFilling(int cnt);
+	bool needEvolve();
+	void evolve();
+
+	int foodOnMap();
+	int poisonOnMap();
 	MyObject* getObj(int y, int x);
 	std::pair<int, int> newRandCoords();
 	

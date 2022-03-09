@@ -5,11 +5,12 @@ Bot::Bot() :
 	MyObject	(ObjectType::BOT),
 	mHealth		(START_BOT_HEALTH),
 	mPtr		(0),
-	mDirection	(rand()%6)
+	mDirection	(rand()%6),
+	mProgram    (BOT_MEMORY,NULL)
 {
 	for (int i = 0; i < BOT_MEMORY; i++)
 	{
-		mProgram.push_back(rand() % 5);
+		mProgram[i] = (rand() % 5);
 	}
 }
 
@@ -74,6 +75,26 @@ std::vector<int>
 Bot::getProgram()
 {
 	return mProgram;
+}
+
+void
+Bot::setHealth(int cnt)
+{
+	mHealth = cnt;
+}
+
+void Bot::restoreHealth()
+{
+	mHealth = START_BOT_HEALTH;
+}
+
+void
+Bot::setProgram(std::vector<int> aProgram)
+{
+	for (size_t i = 0; i < aProgram.size(); i++)
+	{
+		mProgram[i] = aProgram[i];
+	}
 }
 
 void 

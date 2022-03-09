@@ -50,6 +50,9 @@ public:
 	void fullMutation();
 	void mutation(int ptr, int cnt);
 	void randMutation();
+	void setProgram(std::vector<int> aProgram);
+	void setHealth(int cnt);
+	void restoreHealth();
 
 	int getHealth();
 	int getDirection();
