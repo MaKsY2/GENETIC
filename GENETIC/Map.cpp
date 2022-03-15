@@ -89,8 +89,7 @@ Map::randCoords()
 	return s;
 }
 
-void Map::
-(int cntTurn)
+void Map::respawnFood(int cntTurn)
 {
 	if (!(cntTurn % TIME_TO_RESPAWN_FOOD))
 	{
