@@ -1,12 +1,16 @@
 #include "BOT.h"
 
+
+
+
 Bot::Bot() :
 	
 	MyObject	(ObjectType::BOT),
 	mHealth		(START_BOT_HEALTH),
 	mPtr		(0),
 	mDirection	(rand()%6),
-	mProgram    (BOT_MEMORY,NULL)
+	mProgram    (BOT_MEMORY,NULL),
+	nearCell    (ObjectType::NUN)
 {
 	for (int i = 0; i < BOT_MEMORY; i++)
 	{
@@ -86,6 +90,11 @@ Bot::setHealth(int cnt)
 void Bot::restoreHealth()
 {
 	mHealth = START_BOT_HEALTH;
+}
+
+void Bot::setCell(ObjectType near)
+{
+	nearCell = near;
 }
 
 void

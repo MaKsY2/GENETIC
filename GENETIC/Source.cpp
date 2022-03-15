@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "BOT.h"
 #include "Map.h"
 #include "Graphics.h"
@@ -6,7 +8,7 @@
 
 void timeStamp(Event &event)
 {
-	long long timeStamper = 1 * 8 * 8 * 8 * 8 * 8 * 8 * 8 * 8 * 8;
+	long long timeStamper = 1 * 8 * 8 * 8 * 8 * 8 * 8 * 8;
 	for (long long i = 0; i < timeStamper; i++)
 	{
 		if (event.type == sf::Event::KeyReleased) {
@@ -30,6 +32,7 @@ void timeStamp(Event &event)
 
 int main()
 {
+	freopen("info.txt", "w", stdout);
 	ContextSettings settings;
 	settings.antialiasingLevel = 8;
 	RenderWindow window(VideoMode(1600, 900), "GENETIC", Style::Default, settings);
@@ -38,6 +41,8 @@ int main()
 	MyGraphics graph(window, font);
 	size_t epoch = 0;
 	size_t cntTurn = 0;
+	
+	std::cout << "Epoch;" << "Life period" << std::endl;
 
 
 	Map map1(FIELD_ROWS, FIELD_COLS);
@@ -54,29 +59,31 @@ int main()
 			if (event.type == Event::Closed)
 				window.close();
 		}
-
 		graph.updateMap(map1.getField(), window, map1);
 		window.display();
 
 		timeStamp(event);
 		map1.makeTurn();
 		cntTurn++;
+		if (MAX_FOOD_ELEMENTS >= map1.foodOnMap() + CNT_OF_RESPAWN_FOOD) {
+			map1.respawnFood(cntTurn);
+		}
 
 		if (map1.needEvolve())
 		{
 			map1.evolve();
-			if (map1.foodOnMap() <= MAX_FOOD_CNT - MAX_FOOD_ELEMENTS)
+			/*if (map1.foodOnMap() <= MAX_FOOD_CNT - MAX_FOOD_ELEMENTS)
 			{
 				map1.foodMapFilling(MAX_FOOD_ELEMENTS);
 			}
 			if (map1.poisonOnMap() <= MAX_POISON_CNT - MAX_POISON_ELEMENTS)
 			{
 				map1.poisonMapFilling(MAX_POISON_ELEMENTS);
-			}
+			}*/
 			//map1.foodMapFilling(MAX_FOOD_ELEMENTS);
 			//map1.poisonMapFilling(MAX_POISON_ELEMENTS);
 			epoch++;
-			std::cout << "Epoch: " << epoch << "Life period: " << cntTurn << std::endl;
+			std::cout << epoch << ";" << cntTurn << std::endl;
 			cntTurn = 0;
 
 		}

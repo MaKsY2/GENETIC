@@ -12,7 +12,8 @@
 using namespace sf;
 using namespace std;
 
-const float HEXAGON_SIZE = 20.f;
+const float HEXAGON_SIZE = 15.f;
+const float OUTLINE_SIZE = HEXAGON_SIZE*3/20;
 
 
 const float HEXAGON_ERROR = 3 - sqrt(3);
@@ -50,7 +51,7 @@ void MyGraphics:: updateMap(vector<vector<int>> aMap, RenderWindow &a,Map& map1 
 	text.setFont(font);
 	CircleShape hexagon(HEXAGON_SIZE, 6);
 	hexagon.setFillColor(Color(255, 200, 0));
-	hexagon.setOutlineThickness(3.f);
+	hexagon.setOutlineThickness(OUTLINE_SIZE);
 	hexagon.setOutlineColor(Color(213, 207, 225));
 
 	for (int i = 0; i < FIELD_ROWS; i++)
@@ -77,33 +78,3 @@ void MyGraphics:: updateMap(vector<vector<int>> aMap, RenderWindow &a,Map& map1 
 		}
 	}
 }
-
-//int main()
-//{
-//	ContextSettings settings;
-//	settings.antialiasingLevel = 8;
-//	RenderWindow window(VideoMode(1600, 900), "GENETIC", Style::Default, settings);
-//	MyGraphics graph(window);
-//
-//
-//
-//
-//
-//	Map map1(FIELD_ROWS,FIELD_COLS);
-//	//map1.newEmptyMap();
-//
-//	map1.foodMapFilling(20);
-//	map1.poisonMapFilling(20);
-//
-//	while (window.isOpen()) {
-//		Event event;
-//		while (window.pollEvent(event))
-//		{
-//			if (event.type == Event::Closed)
-//				window.close(); 
-//		}
-//		graph.updateMap(map1.getField(), window);
-//		window.display();
-//	}
-//	return 0;
-//}

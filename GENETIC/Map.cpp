@@ -14,7 +14,8 @@
 
 using namespace std;
 
-int dx0[] = {  0,-1,0, 1,1, 1 };
+
+int dx0[] = { 0,-1,0, 1,1, 1 };
 int dy0[] = { -1, 0,1,-1,0,-1 };
 
 int dx1[] = { -1,-1,-1, 0,1, 0 };
@@ -77,6 +78,54 @@ Map::evolve()
 		pair<int, int> newBot = newRandCoords();
 		setObject(new Bot(), newBot);
 		bots.push(newBot);
+	}
+}
+pair<int,int>
+Map::randCoords()
+{
+	pair<int, int> s;
+	s.first = rand() % FIELD_ROWS;
+	s.second = rand() % FIELD_COLS;
+	return s;
+}
+
+void Map::
+(int cntTurn)
+{
+	if (!(cntTurn % TIME_TO_RESPAWN_FOOD))
+	{
+		int cnt = rand() % CNT_OF_RESPAWN_FOOD;
+
+		for (int f = 0; f < cnt; f++)
+		{
+			pair<int, int> s;
+			s = randCoords();
+			while (mField[s.first][s.second]->getType() != ObjectType::FOOD)
+			{
+				s = randCoords();
+			}
+			int i = s.first;
+			int j = s.second;
+			for (int k = 0;k < 6;k++)
+			{
+				pair<int, int> p;
+				if (i % 2 == 0)
+				{
+					p.first = i + dy0[k];
+					p.second = j + dx0[k];
+				}
+				else
+				{
+					p.first = i + dy1[k];
+					p.second = j + dx1[k];
+				}
+				if (mField[p.first][p.second]->getType() == ObjectType::NUN)
+				{
+					setObject(new Food(), p);
+					break;
+				}
+			}
+		}
 	}
 }
 

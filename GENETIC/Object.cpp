@@ -15,7 +15,13 @@ MyObject::MyObject(ObjectType aType) :
 
 ObjectType MyObject::getType()
 {
+	if (mType == ObjectType::FOOD)
+	{
+		int tt = 0;
+		tt++;
+	}
 	return mType;
+
 }
 
 MyObject::~MyObject()

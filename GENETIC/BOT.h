@@ -53,6 +53,7 @@ public:
 	void setProgram(std::vector<int> aProgram);
 	void setHealth(int cnt);
 	void restoreHealth();
+	void setCell(ObjectType near);
 
 	int getHealth();
 	int getDirection();
@@ -67,6 +68,7 @@ private:
 	std::vector<int> mProgram;
 	int mPtr;
 	int mDirection;
+	ObjectType nearCell;
 };
 
 #endif BOT_H
