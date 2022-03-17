@@ -50,6 +50,7 @@ int main()
 	map1.foodMapFilling(MAX_FOOD_ELEMENTS);
 	map1.poisonMapFilling(MAX_POISON_ELEMENTS);
 	map1.botMapFilling(MAX_BOT_ELEMENTS);
+	map1.wallMapFilling(MAX_WALL_ELEMENTS);
 
 	while (window.isOpen()) {
 
@@ -65,21 +66,32 @@ int main()
 		timeStamp(event);
 		map1.makeTurn();
 		cntTurn++;
-		if (MAX_FOOD_ELEMENTS >= map1.foodOnMap() + CNT_OF_RESPAWN_FOOD) {
-			map1.respawnFood(cntTurn);
+#ifdef FOOD
+		map1.respawnFood(cntTurn);
+#endif
+		if (MAX_FOOD_ELEMENTS >= map1.foodOnMap() + MAX_BOT_ELEMENTS) {
+
+			map1.foodRandFill();
+		}
+		if (MAX_POISON_ELEMENTS >= map1.poisonOnMap() + MAX_BOT_ELEMENTS) {
+
+			map1.poisonRandFill();
 		}
 
 		if (map1.needEvolve())
 		{
 			map1.evolve();
-			/*if (map1.foodOnMap() <= MAX_FOOD_CNT - MAX_FOOD_ELEMENTS)
+
+#ifdef FOOD_AND_POSION
+			if (map1.foodOnMap() <= MAX_FOOD_ELEMENTS)
 			{
 				map1.foodMapFilling(MAX_FOOD_ELEMENTS);
 			}
-			if (map1.poisonOnMap() <= MAX_POISON_CNT - MAX_POISON_ELEMENTS)
+			if (map1.poisonOnMap() <= MAX_POISON_ELEMENTS)
 			{
 				map1.poisonMapFilling(MAX_POISON_ELEMENTS);
-			}*/
+			}
+#endif
 			//map1.foodMapFilling(MAX_FOOD_ELEMENTS);
 			//map1.poisonMapFilling(MAX_POISON_ELEMENTS);
 			epoch++;

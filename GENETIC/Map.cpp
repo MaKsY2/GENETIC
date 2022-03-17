@@ -89,7 +89,8 @@ Map::randCoords()
 	return s;
 }
 
-void Map::respawnFood(int cntTurn)
+void 
+Map::respawnFood(int cntTurn)
 {
 	if (!(cntTurn % TIME_TO_RESPAWN_FOOD))
 	{
@@ -128,7 +129,8 @@ void Map::respawnFood(int cntTurn)
 	}
 }
 
-int Map::foodOnMap()
+int 
+Map::foodOnMap()
 {
 	int cnt = 0;
 	for (int i = 0; i < FIELD_ROWS; i++)
@@ -144,7 +146,8 @@ int Map::foodOnMap()
 	return cnt;
 }
 
-int Map::poisonOnMap()
+int 
+Map::poisonOnMap()
 {
 	int cnt = 0;
 	for (int i = 0; i < FIELD_ROWS; i++)
@@ -218,6 +221,26 @@ Map::foodMapFilling(int cnt)
 	{
 		setObject(new Food(), newRandCoords());
 		cnt--;
+	}
+}
+
+void 
+Map::foodRandFill()
+{
+	int cnt = rand() % MAX_BOT_ELEMENTS;
+	for (int i = 0; i < cnt; i++)
+	{
+		setObject(new Food(), newRandCoords());
+	}
+}
+
+void 
+Map::poisonRandFill()
+{
+	int cnt = rand() % MAX_BOT_ELEMENTS;
+	for (int i = 0; i < cnt; i++)
+	{
+		setObject(new Poison(), newRandCoords());
 	}
 }
 
@@ -371,6 +394,15 @@ Map::botMapFilling(int cnt)
 		pair<int, int> botCoord = newRandCoords();
 		bots.push(botCoord);
 		setObject(new Bot(), botCoord);
+		cnt--;
+	}
+}
+
+void Map::wallMapFilling(int cnt)
+{
+	while (cnt != 0)
+	{
+		setObject(new Wall(), newRandCoords());
 		cnt--;
 	}
 }

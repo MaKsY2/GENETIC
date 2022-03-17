@@ -23,7 +23,8 @@ Bot::Bot(Bot& other):
 	mHealth		(other.mHealth),
 	mProgram	(other.mProgram),
 	mPtr		(other.mPtr),
-	mDirection	(other.mDirection)
+	mDirection	(other.mDirection),
+	nearCell	(other.nearCell)
 {
 
 }
