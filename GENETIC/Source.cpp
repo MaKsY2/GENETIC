@@ -8,7 +8,7 @@
 
 void timeStamp(Event &event)
 {
-	long long timeStamper = 1 * 8 * 8 * 8 * 8 * 8 * 8 * 8;
+	size_t timeStamper = 1 * 8 * 8 * 8 * 8 * 8;
 	for (long long i = 0; i < timeStamper; i++)
 	{
 		if (event.type == sf::Event::KeyReleased) {
@@ -32,7 +32,6 @@ void timeStamp(Event &event)
 
 int main()
 {
-	freopen("info.txt", "w", stdout);
 	ContextSettings settings;
 	settings.antialiasingLevel = 8;
 	RenderWindow window(VideoMode(1600, 900), "GENETIC", Style::Default, settings);
@@ -96,6 +95,9 @@ int main()
 			//map1.poisonMapFilling(MAX_POISON_ELEMENTS);
 			epoch++;
 			std::cout << epoch << ";" << cntTurn << std::endl;
+			freopen("info.txt", "w", stdout);
+			std::cout << epoch << ";" << cntTurn << std::endl;
+			freopen("CON", "w", stdout);
 			cntTurn = 0;
 
 		}

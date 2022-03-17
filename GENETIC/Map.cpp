@@ -16,10 +16,10 @@ using namespace std;
 
 
 int dx0[] = { 0,-1,0, 1,1, 1 };
-int dy0[] = { -1, 0,1,-1,0,-1 };
+int dy0[] = { -1, 0,1,-1,0,1 };
 
 int dx1[] = { -1,-1,-1, 0,1, 0 };
-int dy1[] = { -1, 0, 1,-1,0,-1 };
+int dy1[] = { -1, 0, 1,-1,0, 1 };
 
 Map::Map(int height, int weight):
 	mField					(height,vector<MyObject*>(weight,NULL))
@@ -48,7 +48,17 @@ Map::~Map()
 bool
 Map::needEvolve()
 {
-	return (bots.size() <= MAX_BOT_ELEMENTS / K_TO_EVOLVE) ? true : false;
+	int ss1 = K_TO_EVOLVE;
+	int ss = MAX_BOT_ELEMENTS; 
+	if (bots.size() <= ss / ss1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	//return (bots.size() <= MAX_BOT_ELEMENTS / K_TO_EVOLVE) ? true : false;
 }
 
 void
@@ -60,17 +70,17 @@ Map::evolve()
 		pair<int, int> current = bots.front();
 		Bot *botParent = static_cast<Bot*>(mField[current.first][current.second]);
 		botParent->restoreHealth();
-		for (size_t i = 1; i < K_TO_EVOLVE; i++)
+		for (size_t j = 1; j < K_TO_EVOLVE; j++)
 		{
 			pair<int, int> newBot = newRandCoords();
 			setObject(new Bot(), newBot);
 			bots.push(newBot);
 			Bot* botSon = static_cast<Bot*>(mField[newBot.first][newBot.second]);
 			botSon->setProgram(botParent->getProgram());
-			botSon->randMutation();
-			botSon->setHealth(START_BOT_HEALTH);
+			if (j == K_TO_EVOLVE - 1) {
+				botSon->randMutation();
+			}
 		}
-		botParent->setHealth(START_BOT_HEALTH);
 		
 	}
 	while (bots.size() != MAX_BOT_ELEMENTS)
