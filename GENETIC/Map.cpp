@@ -294,6 +294,24 @@ Map::makeTurn()
 			break;
 		case Bot::Action::LOOK:
 			bot->shiftPtr();
+			switch (nearObj->getType())
+			{
+			case ObjectType::BOT:
+				bot->shiftPtrs(2);
+				break;
+			case ObjectType::FOOD:
+				bot->shiftPtrs(3);
+				break;
+			case ObjectType::NUN:
+				bot->shiftPtrs(4);
+				break;
+			case ObjectType::POISON:
+				bot->shiftPtrs(5);
+				break;
+			case ObjectType::WALL:
+				bot->shiftPtrs(6);
+				break;
+			}
 			break;
 		case Bot::Action::EAT:
 			switch (nearObj->getType())

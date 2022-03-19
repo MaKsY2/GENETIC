@@ -56,6 +56,22 @@ Bot::Action Bot::run()
 	{
 		return Action::LOOK;
 	}
+	if (mProgram[mPtr] > 4  && mProgram[mPtr] <= 29)
+	{
+		mPtr += (mProgram[mPtr] - 4);
+		if (mPtr >= BOT_MEMORY)
+		{
+			mPtr %= BOT_MEMORY;
+		}
+	}
+	if (mProgram[mPtr] > 29 && mProgram[mPtr] <= 54)
+	{
+		mPtr -= (mProgram[mPtr] - 29);
+		if (mPtr < 0)
+		{
+			mPtr = abs(mPtr) % BOT_MEMORY;
+		}
+	}
 }
 
 int
