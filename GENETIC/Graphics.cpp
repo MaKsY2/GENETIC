@@ -12,8 +12,8 @@
 using namespace sf;
 using namespace std;
 
-const float HEXAGON_SIZE = 15.f;
-const float OUTLINE_SIZE = HEXAGON_SIZE*3/20;
+const float HEXAGON_SIZE = 10.f;
+const float OUTLINE_SIZE = HEXAGON_SIZE*6/100;
 
 
 const float HEXAGON_ERROR = 3 - sqrt(3);

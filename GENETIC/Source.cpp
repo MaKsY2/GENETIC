@@ -59,7 +59,7 @@ int main()
 			if (event.type == Event::Closed)
 				window.close();
 		}
-		graph.updateMap(map1.getField(), window, map1);
+		//graph.updateMap(map1.getField(), window, map1);
 		window.display();
 
 		timeStamp(event);
@@ -95,7 +95,7 @@ int main()
 			//map1.poisonMapFilling(MAX_POISON_ELEMENTS);
 			epoch++;
 			std::cout << epoch << ";" << cntTurn << std::endl;
-			freopen("info.txt", "w", stdout);
+			freopen("info.txt", "a", stdout);
 			std::cout << epoch << ";" << cntTurn << std::endl;
 			freopen("CON", "w", stdout);
 			cntTurn = 0;

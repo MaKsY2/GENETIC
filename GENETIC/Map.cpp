@@ -283,116 +283,123 @@ Map::makeTurn()
 		}
 
 		MyObject* nearObj = mField[nearCoord.first][nearCoord.second];
-		switch (bot->run())
+		Bot::Action deal = Bot::Action::NUN;
+		int step = 0;
+		while (deal != Bot::Action::EAT && deal != Bot::Action::FORWARD && step < 8)
 		{
-		case Bot::Action::NUN:
-			bot->shiftPtr();
-			break;
-		case Bot::Action::TURN:
-			bot->changeDir();
-			bot->shiftPtr();
-			break;
-		case Bot::Action::LOOK:
-			bot->shiftPtr();
-			switch (nearObj->getType())
+			deal = bot->run();
+			step++;
+			switch (deal)
 			{
-			case ObjectType::BOT:
-				bot->shiftPtrs(2);
+			case Bot::Action::NUN:
+				bot->shiftPtr();
 				break;
-			case ObjectType::FOOD:
-				bot->shiftPtrs(3);
+			case Bot::Action::TURN:
+				bot->changeDir();
+				bot->shiftPtr();
 				break;
-			case ObjectType::NUN:
-				bot->shiftPtrs(4);
+			case Bot::Action::LOOK:
+				bot->shiftPtr();
+				switch (nearObj->getType())
+				{
+				case ObjectType::BOT:
+					bot->shiftPtrs(2);
+					break;
+				case ObjectType::FOOD:
+					bot->shiftPtrs(3);
+					break;
+				case ObjectType::NUN:
+					bot->shiftPtrs(4);
+					break;
+				case ObjectType::POISON:
+					bot->shiftPtrs(5);
+					break;
+				case ObjectType::WALL:
+					bot->shiftPtrs(6);
+					break;
+				}
 				break;
-			case ObjectType::POISON:
-				bot->shiftPtrs(5);
+			case Bot::Action::EAT:
+				switch (nearObj->getType())
+				{
+				case ObjectType::BOT:
+					bot->shiftPtr();
+					break;
+				case ObjectType::FOOD:
+					//  
+					// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n'; // cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+					setObject(bot, nearCoord);
+					mField[currentBot.first][currentBot.second] = new Nun();
+					bot->feed(FOOD_ADD_HEALTH);
+					bot->shiftPtr();
+					currentBot = nearCoord;
+					//bots.push(currentBot);
+					break;
+				case ObjectType::NUN:
+					//
+					// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+					setObject(bot, nearCoord);
+					mField[currentBot.first][currentBot.second] = new Nun();
+					bot->shiftPtr();
+					currentBot = nearCoord;
+					//bots.push(currentBot);
+					break;
+				case ObjectType::POISON:
+					//
+					// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+					setObject(bot, nearCoord);
+					mField[currentBot.first][currentBot.second] = new Nun();
+					bot->shiftPtr();
+					bot->hitting(POISON_TAKE_HEALTH);
+					currentBot = nearCoord;
+					//bots.push(currentBot);
+					break;
+				case ObjectType::WALL:
+					bot->shiftPtr();
+					break;
+				}
 				break;
-			case ObjectType::WALL:
-				bot->shiftPtrs(6);
+			case Bot::Action::FORWARD:
+				switch (nearObj->getType())
+				{
+				case ObjectType::BOT:
+					bot->shiftPtr();
+					break;
+				case ObjectType::FOOD:
+					//
+					// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+					setObject(bot, nearCoord);
+					mField[currentBot.first][currentBot.second] = new Nun();
+					bot->shiftPtr();
+					bot->feed(FOOD_ADD_HEALTH / 2);
+					currentBot = nearCoord;
+					//bots.push(currentBot);
+					break;
+				case ObjectType::NUN:
+					//
+					// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+					setObject(bot, nearCoord);
+					mField[currentBot.first][currentBot.second] = new Nun();
+					bot->shiftPtr();
+					currentBot = nearCoord;
+					//bots.push(currentBot);
+					break;
+				case ObjectType::POISON:
+					//
+					// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
+					setObject(bot, nearCoord);
+					mField[currentBot.first][currentBot.second] = new Nun();
+					bot->shiftPtr();
+					bot->hitting(POISON_TAKE_HEALTH / 2);
+					currentBot = nearCoord;
+					//bots.push(currentBot);
+					break;
+				case ObjectType::WALL:
+					bot->shiftPtr();
+					break;
+				}
 				break;
 			}
-			break;
-		case Bot::Action::EAT:
-			switch (nearObj->getType())
-			{
-			case ObjectType::BOT:
-				bot->shiftPtr();
-				break;
-			case ObjectType::FOOD:
-				//  
-				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n'; // cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
-				setObject(bot, nearCoord);
-				mField[currentBot.first][currentBot.second] = new Nun();
-				bot->feed(FOOD_ADD_HEALTH);
-				bot->shiftPtr();
-				currentBot = nearCoord;
-				//bots.push(currentBot);
-				break;
-			case ObjectType::NUN:
-				//
-				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
-				setObject(bot, nearCoord);
-				mField[currentBot.first][currentBot.second] = new Nun();
-				bot->shiftPtr();
-				currentBot = nearCoord;
-				//bots.push(currentBot);
-				break;
-			case ObjectType::POISON:
-				//
-				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
-				setObject(bot, nearCoord);
-				mField[currentBot.first][currentBot.second] = new Nun();
-				bot->shiftPtr();
-				bot->hitting(POISON_TAKE_HEALTH);
-				currentBot = nearCoord;
-				//bots.push(currentBot);
-				break;
-			case ObjectType::WALL:
-				bot->shiftPtr();
-				break;
-			}
-			break;
-		case Bot::Action::FORWARD:
-			switch (nearObj->getType())
-			{
-			case ObjectType::BOT:
-				bot->shiftPtr();
-				break;
-			case ObjectType::FOOD:
-				//
-				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
-				setObject(bot, nearCoord);
-				mField[currentBot.first][currentBot.second] = new Nun();
-				bot->shiftPtr();
-				bot->feed(FOOD_ADD_HEALTH / 2);
-				currentBot = nearCoord;
-				//bots.push(currentBot);
-				break;
-			case ObjectType::NUN:
-				//
-				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
-				setObject(bot, nearCoord);
-				mField[currentBot.first][currentBot.second] = new Nun();
-				bot->shiftPtr();
-				currentBot = nearCoord;
-				//bots.push(currentBot);
-				break;
-			case ObjectType::POISON:
-				//
-				// cout << setw(5) << currentBot.second + 1 << ' ' << currentBot.first + 1 << setw(5) << bot->getDirection() << setw(5) << nearCoord.second + 1 << ' ' << nearCoord.first + 1 << '\n';
-				setObject(bot, nearCoord);
-				mField[currentBot.first][currentBot.second] = new Nun();
-				bot->shiftPtr();
-				bot->hitting(POISON_TAKE_HEALTH / 2);
-				currentBot = nearCoord;
-				//bots.push(currentBot);
-				break;
-			case ObjectType::WALL:
-				bot->shiftPtr();
-				break;
-			}
-			break;
 		}
 		bot->hitting(1);
 		int isLive = true;

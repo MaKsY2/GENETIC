@@ -8,15 +8,15 @@
 #include <vector>
 #include <queue>
 
-#define MAX_FOOD_ELEMENTS 144
-#define MAX_POISON_ELEMENTS 144
-#define MAX_WALL_ELEMENTS 77
-#define MAX_BOT_ELEMENTS 32
+#define MAX_FOOD_ELEMENTS 576
+#define MAX_POISON_ELEMENTS 576
+#define MAX_WALL_ELEMENTS 288
+#define MAX_BOT_ELEMENTS 64
 #define CNT_OF_RESPAWN_FOOD MAX_FOOD_ELEMENTS/4
 #define TIME_TO_RESPAWN_FOOD 10
-#define K_TO_EVOLVE MAX_BOT_ELEMENTS/4 //Coefficient to evolve
-#define FIELD_ROWS 18
-#define FIELD_COLS 32
+#define K_TO_EVOLVE MAX_BOT_ELEMENTS/8 //Coefficient to evolve
+#define FIELD_ROWS 36
+#define FIELD_COLS 64
 
 
 class Map

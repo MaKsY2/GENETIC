@@ -63,6 +63,7 @@ Bot::Action Bot::run()
 		{
 			mPtr %= BOT_MEMORY;
 		}
+		return Action::NUN;
 	}
 	if (mProgram[mPtr] > 29 && mProgram[mPtr] <= 54)
 	{
@@ -71,6 +72,7 @@ Bot::Action Bot::run()
 		{
 			mPtr = abs(mPtr) % BOT_MEMORY;
 		}
+		return Action::NUN;
 	}
 }
 
